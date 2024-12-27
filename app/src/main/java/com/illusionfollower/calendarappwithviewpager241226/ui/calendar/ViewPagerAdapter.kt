@@ -13,7 +13,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ViewPagerAdapter( private var itemHeight: Int
+class ViewPagerAdapter( private var itemHeight: Int,
 ):RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dateCache = mutableMapOf<Int, LocalDate>()
@@ -35,7 +35,8 @@ class ViewPagerAdapter( private var itemHeight: Int
             val currentDate = getDateForPosition(position)
             val dayList = getDayListForPosition(position)
 
-            val calendarAdapter = CalendarAdapter( itemHeight
+            val calendarAdapter = CalendarAdapter( itemHeight,
+                dayList
             )
 
             rvThisMonth.apply {

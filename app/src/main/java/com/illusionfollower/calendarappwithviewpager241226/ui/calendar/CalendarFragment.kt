@@ -18,7 +18,6 @@ class CalendarFragment : Fragment() {
 
     private val viewModel: CalendarViewModel by activityViewModels()
 
-    private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var calendarManager: CalendarManager
 
     override fun onCreateView(
@@ -30,7 +29,6 @@ class CalendarFragment : Fragment() {
         val root: View = binding.root
 
         calendarManager = CalendarManager(binding)
-        calendarAdapter = CalendarAdapter(0)
 
         return root
     }
