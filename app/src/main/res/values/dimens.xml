@@ -2,4 +2,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="bar_height">56dp</dimen>
+    <dimen name="days_line_part_height">33dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">120dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="calendar_height_negative">-300dp</dimen>
+    <dimen name="chip_spacing">8dp</dimen>
+    <dimen name="chip_height">32dp</dimen>
 </resources>

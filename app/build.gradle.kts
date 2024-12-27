@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
     namespace = "com.illusionfollower.calendarappwithviewpager241226"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.illusionfollower.calendarappwithviewpager241226"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -39,6 +40,11 @@ android {
 }
 
 dependencies {
+
+    implementation(libs.room.runtime) // Room Runtime
+    kapt(libs.room.compiler) // Annotation Processor (KAPT)
+    implementation(libs.room.ktx) // Kotlin Extensions
+    coreLibraryDesugaring(libs.android.desugar) //Desugaring
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
