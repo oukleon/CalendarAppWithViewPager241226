@@ -1,6 +1,7 @@
 package com.illusionfollower.calendarappwithviewpager241226.ui.calendar
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.viewpager2.widget.ViewPager2
@@ -12,10 +13,14 @@ class CalendarManager(
     private val binding: FragmentCalendarBinding
 ) {
     fun setupCalendar(calendarHeight: Int){
+        Log.d("startingTimeCheck", "setupCalendar start")
         binding.viewPager.apply {
+            Log.d("startingTimeCheck", "before adapter set")
             // adapter 연결 추가
             adapter = ViewPagerAdapter( calendarHeight
             )
+            Log.d("startingTimeCheck", "after adapter set")
+
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -31,8 +36,11 @@ class CalendarManager(
 
                 }
             })
+            Log.d("startingTimeCheck", "before setCurrentItem")
+
             // 시작 위치를 중앙으로 설정
             setCurrentItem(Int.MAX_VALUE / 2, false)
+            Log.d("startingTimeCheck", "after setCurrentItem")
         }
     }
 }

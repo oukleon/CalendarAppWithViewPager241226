@@ -2,6 +2,7 @@ package com.illusionfollower.calendarappwithviewpager241226.ui.calendar
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +26,13 @@ class CalendarFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("startingTimeCheck", "onCreateView start")
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        Log.d("startingTimeCheck", "after binding")
 
         calendarManager = CalendarManager(binding)
+        Log.d("startingTimeCheck", "after CalendarManager init")
 
         return root
     }
@@ -39,9 +43,13 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("startingTimeCheck", "onViewCreated start")
         super.onViewCreated(view, savedInstanceState)
         viewModel.dateHeight.observe(viewLifecycleOwner) { dateHeight ->
+            Log.d("startingTimeCheck", "dateHeight changed: $dateHeight")
             calendarManager.setupCalendar(dateHeight)
+            Log.d("startingTimeCheck", "setupCalendar end: $dateHeight")
         }
+        Log.d("startingTimeCheck", "onViewCreated end")
     }
 }

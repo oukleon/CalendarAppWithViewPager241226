@@ -2,6 +2,8 @@ package com.illusionfollower.calendarappwithviewpager241226
 
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.WindowInsets
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -23,15 +25,28 @@ class MainActivity : AppCompatActivity() {
     private val settingsFragment = SettingsFragment()
 
     private val viewModel: CalendarViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("startingTimeCheck", "onCreate start")
         super.onCreate(savedInstanceState)
+        Log.d("startingTimeCheck", "after super.onCreate")
         binding = ActivityMainBinding.inflate(layoutInflater)
+        Log.d("startingTimeCheck", "after binding")
         setContentView(binding.root)
+        Log.d("startingTimeCheck", "after setContentView")
 
         viewModel.setScreenHeight(measureUsableScreenSize())
+        Log.d("startingTimeCheck", "after setScreenHeight")
         setupNavigation()
+        Log.d("startingTimeCheck", "after setupNavigation")
     }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//
+//        viewModel.setScreenHeight(measureUsableScreenSize())
+//        setupNavigation()
+//    }
 
     private fun setupNavigation() {
         // 초기 세팅
@@ -68,16 +83,40 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
     //utils
     private fun measureUsableScreenSize(): Int {
-        val windowMetrics = windowManager.currentWindowMetrics
-        val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(
-            WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
-        )
-        val usableHeight = windowMetrics.bounds.height() - insets.top - insets.bottom
-        val toolbarHeight = resources.getDimensionPixelSize(BAR_HEIGHT_RES_ID)
-        val dayTextViewHeight = resources.getDimensionPixelSize(R.dimen.days_line_part_height)
-        return usableHeight - toolbarHeight - toolbarHeight - dayTextViewHeight
+        // R 버전 이상
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics = windowManager.currentWindowMetrics
+            val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+            )
+            val usableHeight = windowMetrics.bounds.height() - insets.top - insets.bottom
+            val toolbarHeight = resources.getDimensionPixelSize(BAR_HEIGHT_RES_ID)
+            val dayTextViewHeight = resources.getDimensionPixelSize(R.dimen.days_line_part_height)
+            return usableHeight - toolbarHeight - toolbarHeight - dayTextViewHeight
+        }
+        // R 버전 미만
+        else {
+            val displayMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val usableHeight = displayMetrics.heightPixels
+            val toolbarHeight = resources.getDimensionPixelSize(BAR_HEIGHT_RES_ID)
+            val dayTextViewHeight = resources.getDimensionPixelSize(R.dimen.days_line_part_height)
+            return usableHeight - toolbarHeight - toolbarHeight - dayTextViewHeight
+        }
     }
+
+//    //utils
+//    private fun measureUsableScreenSize(): Int {
+//        val windowMetrics = windowManager.currentWindowMetrics
+//        val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(
+//            WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+//        )
+//        val usableHeight = windowMetrics.bounds.height() - insets.top - insets.bottom
+//        val toolbarHeight = resources.getDimensionPixelSize(BAR_HEIGHT_RES_ID)
+//        val dayTextViewHeight = resources.getDimensionPixelSize(R.dimen.days_line_part_height)
+//        return usableHeight - toolbarHeight - toolbarHeight - dayTextViewHeight
+//    }
 }

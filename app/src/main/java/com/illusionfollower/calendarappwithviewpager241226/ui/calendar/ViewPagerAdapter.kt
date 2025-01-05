@@ -1,6 +1,7 @@
 package com.illusionfollower.calendarappwithviewpager241226.ui.calendar
 
 import android.os.Build
+import android.util.Log
 import android.util.LruCache
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ViewPagerAdapter( private var itemHeight: Int,
+class ViewPagerAdapter( private var itemHeight: Int
 ):RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dateCache = mutableMapOf<Int, LocalDate>()
@@ -21,13 +22,17 @@ class ViewPagerAdapter( private var itemHeight: Int,
     private val dayListCache = LruCache<Int, List<LocalDate>>(12) // 최근 12개월만
 
     private val center = Int.MAX_VALUE / 2
-
+    private val sharedPool = RecyclerView.RecycledViewPool().apply {
+        setMaxRecycledViews(0, 50)  // viewType 0에 대해 50개까지 재활용
+    }
     // 현재 보고 있는 달의 정보를 저장
     private var currentViewingMonth: LocalDate = LocalDate.now()
 
     inner class PagerViewHolder(binding: ItemCalendarContainerBinding) : RecyclerView.ViewHolder(binding.root) {
         private val rvThisMonth = binding.rvThisMonth.apply {
             layoutManager = GridLayoutManager(context, 7)
+            setItemViewCacheSize(42)
+            setRecycledViewPool(sharedPool)
         }
 
         fun bind(date: Int) {
@@ -38,9 +43,12 @@ class ViewPagerAdapter( private var itemHeight: Int,
             val calendarAdapter = CalendarAdapter( itemHeight,
                 dayList
             )
-
             rvThisMonth.apply {
                 adapter = calendarAdapter
+            }
+            // CalendarAdapter 바인딩이 모두 끝난 후 로그 출력
+            rvThisMonth.post {
+                Log.d("startingTimeCheck", "CalendarAdapter binding complete for position: $position")
             }
         }
     }
@@ -78,8 +86,10 @@ class ViewPagerAdapter( private var itemHeight: Int,
 
         currentViewingMonth = getDateForPosition(position)
         PerformanceTracker.markPoint("Date calculation")
+        val startTime = System.currentTimeMillis()
 
         holder.bind(position)
+        Log.d("startingTimeCheck", "ViewPagerAdapter onBindViewHolder complete, position: $position, duration: ${System.currentTimeMillis() - startTime}ms")
         PerformanceTracker.markPoint("Binding")
 
         PerformanceTracker.printSummary()

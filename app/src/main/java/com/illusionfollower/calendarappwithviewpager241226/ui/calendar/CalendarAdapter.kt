@@ -40,18 +40,18 @@ class CalendarAdapter(
                 binding.tvDayText.text = date.dayOfMonth.toString()
                 currentDate = date
             }
-
-            val isToday = date == today
-            if (binding.clDay.tag != isToday){
-                binding.clDay.tag = isToday
-                if (isToday){
-                    binding.clDay.foreground = if (date.monthValue == today.dayOfMonth){
-                        todayDrawable
-                    }else{
-                        todayDrawableAlpha
-                    }
-                }
-            }
+//
+//            val isToday = date == today
+//            if (binding.clDay.tag != isToday){
+//                binding.clDay.tag = isToday
+//                if (isToday){
+//                    binding.clDay.foreground = if (date.monthValue == today.dayOfMonth){
+//                        todayDrawable
+//                    }else{
+//                        todayDrawableAlpha
+//                    }
+//                }
+//            }
         }
     }
 
